@@ -1,5 +1,6 @@
 import "./App.css";
 import { gql, useQuery } from "@apollo/client";
+import Notes from "./components/Notes";
 
 const ALL_NOTES = gql`
   query {
@@ -25,7 +26,8 @@ function App() {
   }
   return (
     <>
-      <div>{result.data.allNotes.map((p) => p.content).join(", ")}</div>
+      <h1>Notes</h1>
+      <Notes notes={result.data.allNotes} />
     </>
   );
 }
