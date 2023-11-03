@@ -1,6 +1,7 @@
 const { ApolloServer } = require("@apollo/server");
 const { GraphQLError, GraphQLScalarType } = require("graphql");
 const { startStandaloneServer } = require("@apollo/server/standalone");
+const { pool } = require("./config");
 
 require("dotenv").config();
 
