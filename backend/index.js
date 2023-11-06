@@ -2,6 +2,9 @@ const { ApolloServer } = require("@apollo/server");
 const { GraphQLError, GraphQLScalarType } = require("graphql");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { pool } = require("./config");
+const cors = require("cors");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 require("dotenv").config();
 
@@ -133,9 +136,6 @@ const resolvers = {
           is_public,
         ];
         const data = await pool.query(addNoteQuery, noteValues);
-        pubsub.publish("NOTE_ADDED", {
-          noteAdded: [{ ...data.rows[0], username: currentUser.username }],
-        });
         return [{ ...data.rows[0], username: currentUser.username }];
       } catch (error) {
         throw new GraphQLError("Add Note failure", {
@@ -226,6 +226,27 @@ const server = new ApolloServer({
 
 startStandaloneServer(server, {
   listen: { port: 4000 },
+  context: async ({ req, res }) => {
+    const auth = req ? req.headers.authorization : null;
+    if (auth && auth.startsWith("Bearer")) {
+      const decodedToken = jwt.verify(auth.substring(7), process.env.SECRET);
+      const query = "SELECT * FROM users WHERE user_id=$1;";
+      const value = [decodedToken.id];
+
+      try {
+        const data = await pool.query(query, value);
+        const currentUser = data.rows[0];
+        return { currentUser };
+      } catch (error) {
+        throw new GraphQLError("Find User failure", {
+          extensions: {
+            code: "Failed to find user",
+            error,
+          },
+        });
+      }
+    }
+  },
 }).then(({ url }) => {
   console.log(`Server ready at ${url}`);
 });

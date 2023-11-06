@@ -1,20 +1,8 @@
 import "./App.css";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import Notes from "./components/Notes";
-
-const ALL_NOTES = gql`
-  query {
-    allNotes {
-      note_id
-      user_id
-      username
-      content
-      is_important
-      is_public
-      created_at
-    }
-  }
-`;
+import NoteForm from "./components/NoteForm";
+import { ALL_NOTES } from "./queries";
 
 function App() {
   const result = useQuery(ALL_NOTES);
@@ -26,6 +14,7 @@ function App() {
   }
   return (
     <>
+      <NoteForm />
       <h1>Notes</h1>
       <Notes notes={result.data.allNotes} />
     </>
