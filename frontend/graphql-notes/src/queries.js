@@ -36,4 +36,12 @@ const ADD_NOTE = gql`
   }
 `;
 
-export { ALL_NOTES, ADD_NOTE };
+const LOGIN = gql`
+  mutation login($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+      value
+    }
+  }
+`;
+
+export { ALL_NOTES, ADD_NOTE, LOGIN };
