@@ -6,8 +6,16 @@ const NoteForm = () => {
   const [content, setContent] = useState("");
   const [is_public, setIsPublic] = useState(false);
   const [is_important, setImportant] = useState(false);
+
   const [addNote] = useMutation(ADD_NOTE, {
-    refetchQueries: [{ query: ALL_NOTES }],
+    // refetchQueries: [{ query: ALL_NOTES }],
+    update: (cache, response) => {
+      cache.updateQuery({ query: ALL_NOTES }, ({ allNotes }) => {
+        return {
+          allNotes: [...response.data.addNote, ...allNotes],
+        };
+      });
+    },
   });
 
   const submit = (event) => {
