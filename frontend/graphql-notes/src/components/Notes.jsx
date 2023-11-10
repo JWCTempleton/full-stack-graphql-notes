@@ -24,7 +24,7 @@ const Notes = ({ notes }) => {
           >
             <div>
               Created by: {n.username} on{" "}
-              {moment(n.created_at).format(`MMMM Do YYYY`)}
+              {moment(n.created_at).format(`MMMM Do, YYYY`)}
             </div>
           </div>
         </div>

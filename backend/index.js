@@ -83,7 +83,6 @@ const resolvers = {
         const data = await pool.query(
           "SELECT n.note_id, n.user_id, n.content, n.is_public, n.is_important, n.created_at, u.username FROM notes n join users u on n.user_id = u.user_id WHERE n.is_public=true ORDER BY n.created_at DESC;"
         );
-        console.log("DATA", data.rows);
 
         if (data.rowCount == 0) {
           return res.status(404).send("No note exists");

@@ -41,7 +41,7 @@ const NoteForm = () => {
             marginTop: "8px",
           }}
         >
-          <div>
+          <div style={{ marginBottom: "10px" }}>
             <label>
               <input
                 type="checkbox"
