@@ -14,6 +14,19 @@ const ALL_NOTES = gql`
   }
 `;
 
+const ME = gql`
+  query {
+    me {
+      user_id
+      username
+      email
+      created_at
+      is_admin
+      suspended
+    }
+  }
+`;
+
 const ADD_NOTE = gql`
   mutation addNote(
     $content: String!
@@ -44,4 +57,4 @@ const LOGIN = gql`
   }
 `;
 
-export { ALL_NOTES, ADD_NOTE, LOGIN };
+export { ALL_NOTES, ADD_NOTE, LOGIN, ME };
