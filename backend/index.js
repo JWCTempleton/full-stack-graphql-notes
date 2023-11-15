@@ -206,9 +206,7 @@ const resolvers = {
         };
 
         return {
-          value: jwt.sign(userForToken, process.env.SECRET, {
-            expiresIn: 120 * 60,
-          }),
+          value: jwt.sign(userForToken, process.env.SECRET),
         };
       } catch (error) {
         throw new GraphQLError("Find User failure", {
