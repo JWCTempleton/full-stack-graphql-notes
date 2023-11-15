@@ -10,7 +10,7 @@ const styles = {
   alignItems: "flex-start",
   padding: "10px",
 };
-const Notes = ({ notes }) => {
+const Notes = ({ notes, user }) => {
   return (
     <div>
       {notes.map((n) => (
@@ -26,6 +26,14 @@ const Notes = ({ notes }) => {
               Created by: {n.username} on{" "}
               {moment(n.created_at).format(`MMMM Do, YYYY`)}
             </div>
+            {user && user === n.username ? (
+              <div>
+                <button>Edit</button>
+                <button>Delete</button>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       ))}

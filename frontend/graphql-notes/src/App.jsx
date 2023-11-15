@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [token, setToken] = useState(null);
+  const [user, setUser] = useState(null);
   const result = useQuery(ALL_NOTES);
   const client = useApolloClient();
 
@@ -32,16 +33,26 @@ function App() {
     return (
       <div>
         <h2>Login</h2>
-        <LoginForm setToken={setToken} />
+        <LoginForm setToken={setToken} setUser={setUser} />
       </div>
     );
   }
   return (
     <>
-      <button onClick={logout}>logout</button>
+      <div
+        style={{
+          display: "flex",
+          width: "100",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <h2>Welcome, {user}</h2>
+        <button onClick={logout}>logout</button>
+      </div>
       <NoteForm />
       <h1>Notes</h1>
-      <Notes notes={result.data.allNotes} />
+      <Notes notes={result.data.allNotes} user={user} />
     </>
   );
 }

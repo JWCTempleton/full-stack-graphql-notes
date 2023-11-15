@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useMutation } from "@apollo/client";
 import { LOGIN } from "../queries";
 
-const LoginForm = ({ setToken }) => {
+const LoginForm = ({ setToken, setUser }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -17,6 +17,7 @@ const LoginForm = ({ setToken }) => {
       const token = result.data.login.value;
       setToken(token);
       localStorage.setItem("note-user-token", token);
+      setUser(username);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result.data]);
