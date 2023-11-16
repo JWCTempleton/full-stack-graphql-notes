@@ -20,14 +20,23 @@ const Notes = ({ notes, user }) => {
             style={{
               display: "flex",
               width: "100%",
+              flexDirection: "column",
+              alignItems: "flex-start",
             }}
           >
             <div>
               Created by: {n.username} on{" "}
-              {moment(n.created_at).format(`MMMM Do, YYYY`)}
+              {moment(n.created_at).format(`MMMM Do, YYYY`)}.
             </div>
             {user && user === n.username ? (
-              <div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-around",
+                  width: "100%",
+                  paddingTop: "12px",
+                }}
+              >
                 <button>Edit</button>
                 <button>Delete</button>
               </div>

@@ -18,6 +18,8 @@ const LoginForm = ({ setToken, setUser }) => {
       setToken(token);
       localStorage.setItem("note-user-token", token);
       setUser(username);
+      setUsername("");
+      setPassword("");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result.data]);
