@@ -47,8 +47,11 @@ function App() {
           alignItems: "center",
         }}
       >
-        <h2>Welcome, {user}</h2>
-        <button onClick={logout}>logout</button>
+        {user && (
+          <div>
+            <h2>Welcome, {user}</h2> <button onClick={logout}>logout</button>
+          </div>
+        )}
       </div>
       <NoteForm />
       <h1>Notes</h1>
