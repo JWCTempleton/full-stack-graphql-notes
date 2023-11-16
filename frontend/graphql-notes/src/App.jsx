@@ -3,6 +3,7 @@ import { useApolloClient, useQuery } from "@apollo/client";
 import Notes from "./components/Notes";
 import NoteForm from "./components/NoteForm";
 import LoginForm from "./components/LoginForm";
+import Toggleable from "./components/Toggleable";
 import { ALL_NOTES } from "./queries";
 import { useEffect, useState } from "react";
 
@@ -29,7 +30,7 @@ function App() {
     client.resetStore();
   };
 
-  if (!token) {
+  if (!user) {
     return (
       <div>
         <h2>Login</h2>
@@ -53,7 +54,9 @@ function App() {
           </div>
         )}
       </div>
-      <NoteForm />
+      <Toggleable buttonLabel="New Note">
+        <NoteForm />
+      </Toggleable>
       <h1>Notes</h1>
       <Notes notes={result.data.allNotes} user={user} />
     </>
