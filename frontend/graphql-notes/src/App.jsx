@@ -8,6 +8,7 @@ import { ALL_NOTES } from "./queries";
 import { useEffect, useState } from "react";
 
 function App() {
+  // eslint-disable-next-line no-unused-vars
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
   const result = useQuery(ALL_NOTES);
@@ -26,6 +27,7 @@ function App() {
 
   const logout = () => {
     setToken(null);
+    setUser(null);
     localStorage.clear();
     client.resetStore();
   };

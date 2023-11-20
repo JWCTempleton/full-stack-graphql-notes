@@ -61,15 +61,16 @@ const typeDefs = `
             password: String!
             email: String!
         ): [User]
+        editNote(
+          note_id: ID!
+          is_important: Boolean!
+        ):[Note]
     }
     type Query {
         allNotes: [Note!]!
         noteCount: [Count]!
         me: User
     }
-    type Subscription {
-      noteAdded: [Note]
-    } 
 `;
 
 const resolvers = {
@@ -136,6 +137,33 @@ const resolvers = {
         ];
         const data = await pool.query(addNoteQuery, noteValues);
         return [{ ...data.rows[0], username: currentUser.username }];
+      } catch (error) {
+        throw new GraphQLError("Add Note failure", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            error,
+          },
+        });
+      }
+    },
+    editNote: async (root, args, context) => {
+      const currentUser = context.currentUser;
+      const { note_id, is_important } = args;
+      if (!currentUser) {
+        throw new GraphQLError("User not Authenticated", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+          },
+        });
+      }
+
+      try {
+        const editNoteQuery =
+          "UPDATE notes set is_important = $2 where note_id = $1 returning *;";
+        const editValues = [note_id, !is_important];
+        const data = await pool.query(editNoteQuery, editValues);
+
+        return [data.rows[0]];
       } catch (error) {
         throw new GraphQLError("Add Note failure", {
           extensions: {
