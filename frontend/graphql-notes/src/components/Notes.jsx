@@ -1,4 +1,8 @@
 import moment from "moment";
+import { ALL_NOTES, EDIT_NOTE } from "../queries";
+import { useMutation } from "@apollo/client";
+import Toggleable from "./Toggleable";
+import NoteForm from "./NoteForm";
 
 const styles = {
   border: "1px solid white",
@@ -10,42 +14,61 @@ const styles = {
   alignItems: "flex-start",
   padding: "10px",
 };
+
 const Notes = ({ notes, user }) => {
+  const [editNote] = useMutation(EDIT_NOTE, {
+    refetchQueries: [{ query: ALL_NOTES }],
+  });
+
   return (
     <div>
-      {notes.map((n) => (
-        <div style={styles} key={n.note_id}>
-          <p style={{ fontWeight: "bold" }}>{n.content}</p>
-          <div
-            style={{
-              display: "flex",
-              width: "100%",
-              flexDirection: "column",
-              alignItems: "flex-start",
-            }}
-          >
-            <div>
-              Created by: {n.username} on{" "}
-              {moment(n.created_at).format(`MMMM Do, YYYY`)}.
-            </div>
-            {user && user === n.username ? (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-around",
-                  width: "100%",
-                  paddingTop: "12px",
-                }}
-              >
-                <button>Edit</button>
-                <button>Delete</button>
+      <Toggleable buttonLabel="New Note">
+        <NoteForm />
+      </Toggleable>
+      <h1>Notes</h1>
+      {notes.map((n) => {
+        let noteId = n.note_id;
+        let isImportant = n.is_important;
+        return (
+          <div style={styles} key={n.note_id}>
+            <p style={{ fontWeight: "bold" }}>{n.content}</p>
+            <div
+              style={{
+                display: "flex",
+                width: "100%",
+                flexDirection: "column",
+                alignItems: "flex-start",
+              }}
+            >
+              <div>
+                Created by: {n.username} on{" "}
+                {moment(n.created_at).format(`MMMM Do, YYYY`)}.
               </div>
-            ) : (
-              ""
-            )}
+              {user && user === n.username ? (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-around",
+                    width: "100%",
+                    paddingTop: "12px",
+                  }}
+                >
+                  <button
+                    onClick={() =>
+                      editNote({ variables: { noteId, isImportant } })
+                    }
+                  >
+                    {n.is_important ? "Important" : "Unimportant"}
+                  </button>
+                  <button>Delete</button>
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };

@@ -49,6 +49,20 @@ const ADD_NOTE = gql`
   }
 `;
 
+const EDIT_NOTE = gql`
+  mutation editNote($noteId: ID!, $isImportant: Boolean!) {
+    editNote(note_id: $noteId, is_important: $isImportant) {
+      note_id
+      user_id
+      username
+      content
+      is_important
+      is_public
+      created_at
+    }
+  }
+`;
+
 const LOGIN = gql`
   mutation login($username: String!, $password: String!) {
     login(username: $username, password: $password) {
@@ -57,4 +71,4 @@ const LOGIN = gql`
   }
 `;
 
-export { ALL_NOTES, ADD_NOTE, LOGIN, ME };
+export { ALL_NOTES, ADD_NOTE, LOGIN, ME, EDIT_NOTE };
