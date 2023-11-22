@@ -15,15 +15,19 @@ const styles = {
   padding: "10px",
 };
 
-const Notes = ({ notes, user }) => {
+const Notes = ({ notes, user, visible, setVisible }) => {
   const [editNote] = useMutation(EDIT_NOTE, {
     refetchQueries: [{ query: ALL_NOTES }],
   });
 
   return (
     <div>
-      <Toggleable buttonLabel="New Note">
-        <NoteForm />
+      <Toggleable
+        buttonLabel="New Note"
+        visible={visible}
+        setVisible={setVisible}
+      >
+        <NoteForm setVisible={setVisible} />
       </Toggleable>
       <h1>Notes</h1>
       {notes.map((n) => {

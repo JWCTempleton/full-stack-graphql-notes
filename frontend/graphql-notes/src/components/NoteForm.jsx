@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client";
 import { useState } from "react";
 import { ALL_NOTES, ADD_NOTE } from "../queries";
 
-const NoteForm = () => {
+const NoteForm = ({ setVisible }) => {
   const [content, setContent] = useState("");
   const [is_public, setIsPublic] = useState(false);
   const [is_important, setImportant] = useState(false);
@@ -26,6 +26,7 @@ const NoteForm = () => {
     setContent("");
     setIsPublic(false);
     setImportant(false);
+    setVisible(false);
   };
 
   return (

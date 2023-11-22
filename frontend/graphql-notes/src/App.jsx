@@ -2,9 +2,7 @@ import "./App.css";
 import { useApolloClient, useQuery } from "@apollo/client";
 import Notes from "./components/Notes";
 import Home from "./components/Home";
-import NoteForm from "./components/NoteForm";
 import LoginForm from "./components/LoginForm";
-import Toggleable from "./components/Toggleable";
 import { ALL_NOTES } from "./queries";
 import { useEffect, useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
@@ -13,6 +11,7 @@ function App() {
   // eslint-disable-next-line no-unused-vars
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
+  const [visible, setVisible] = useState(false);
   const result = useQuery(ALL_NOTES);
   const client = useApolloClient();
 
@@ -86,7 +85,14 @@ function App() {
       <Routes>
         <Route
           path="/notes"
-          element={<Notes notes={result.data.allNotes} user={user} />}
+          element={
+            <Notes
+              notes={result.data.allNotes}
+              user={user}
+              visible={visible}
+              setVisible={setVisible}
+            />
+          }
         />
         {/* <Route path="/users" element={<Users />} /> */}
         <Route path="/" element={<Home />} />
