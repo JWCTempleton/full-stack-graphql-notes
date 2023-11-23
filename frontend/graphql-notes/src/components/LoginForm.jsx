@@ -21,18 +21,24 @@ const LoginForm = ({ setToken, setUser }) => {
       setUsername("");
       setPassword("");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result.data]);
 
-  const submit = async (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
 
-    login({ variables: { username, password } });
+    try {
+      login({ variables: { username, password } });
+    } catch (error) {
+      console.log("ERROR", error);
+    }
+
+    console.log("SUCCESS", result.data);
   };
 
   return (
     <div>
-      <form onSubmit={submit}>
+      <form onSubmit={handleLogin}>
         <div>
           username{" "}
           <input
