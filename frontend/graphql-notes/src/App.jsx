@@ -18,9 +18,10 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    let savedToken = localStorage.getItem("note-user-token");
+    let savedToken = JSON.parse(localStorage.getItem("note-user"));
     if (savedToken) {
-      setToken(savedToken);
+      setToken(savedToken.token);
+      setUser(savedToken.username);
     }
   }, []);
 
@@ -53,41 +54,54 @@ function App() {
       <div
         style={{
           display: "flex",
-          width: "100",
+          width: "80vw",
           justifyContent: "space-between",
-          alignItems: "center",
         }}
       >
-        <div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
           <Link style={{ padding: "10px" }} to="/">
             home
           </Link>
           <Link style={{ padding: "10px" }} to="/notes">
-            notes
+            all notes
           </Link>
           <Link style={{ padding: "10px" }} to="/users">
             users
           </Link>
         </div>
-        {user ? (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              alignItems: "center",
-              gap: "18px",
-              width: "100%",
-              marginBottom: "12px",
-            }}
-          >
-            <h2>Welcome, {user}</h2> <button onClick={logout}>logout</button>
-          </div>
-        ) : (
-          <Link style={{ padding: "10px" }} to="/login">
-            login
-          </Link>
-        )}
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "18px",
+            marginBottom: "12px",
+          }}
+        >
+          {token ? (
+            <>
+              <h2>Welcome, {user}</h2> <button onClick={logout}>logout</button>
+            </>
+          ) : (
+            <Link
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "18px",
+              }}
+              to="/login"
+            >
+              login
+            </Link>
+          )}
+        </div>
       </div>
+
       {/* <Toggleable buttonLabel="New Note">
         <NoteForm />
       </Toggleable>

@@ -16,8 +16,8 @@ const LoginForm = ({ setToken, setUser }) => {
     if (result.data) {
       const token = result.data.login.value;
       setToken(token);
-      localStorage.setItem("note-user-token", token);
       setUser(username);
+      localStorage.setItem("note-user", JSON.stringify({ token, username }));
       setUsername("");
       setPassword("");
     }
@@ -32,8 +32,6 @@ const LoginForm = ({ setToken, setUser }) => {
     } catch (error) {
       console.log("ERROR", error);
     }
-
-    console.log("SUCCESS", result.data);
   };
 
   return (
