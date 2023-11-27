@@ -3,6 +3,7 @@ import { useApolloClient, useQuery } from "@apollo/client";
 import Notes from "./components/Notes";
 import Home from "./components/Home";
 import LoginForm from "./components/LoginForm";
+import UserNotes from "./components/UserNotes";
 import { ALL_NOTES } from "./queries";
 import { useEffect, useState } from "react";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
@@ -18,10 +19,11 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    let savedToken = JSON.parse(localStorage.getItem("note-user"));
+    let savedToken = localStorage.getItem("note-user-token");
+    let savedUser = localStorage.getItem("note-user");
     if (savedToken) {
-      setToken(savedToken.token);
-      setUser(savedToken.username);
+      setToken(savedToken);
+      setUser(savedUser);
     }
   }, []);
 
@@ -70,9 +72,12 @@ function App() {
           <Link style={{ padding: "10px" }} to="/notes">
             all notes
           </Link>
-          <Link style={{ padding: "10px" }} to="/users">
-            users
-          </Link>
+
+          {token && (
+            <Link style={{ padding: "10px" }} to="/usernotes">
+              my notes
+            </Link>
+          )}
         </div>
 
         <div
@@ -119,7 +124,7 @@ function App() {
             />
           }
         />
-        {/* <Route path="/users" element={<Users />} /> */}
+        <Route path="/usernotes" element={<UserNotes />} />
         <Route
           path="/login"
           element={<LoginForm setToken={setToken} setUser={setUser} />}

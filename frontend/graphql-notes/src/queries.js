@@ -14,6 +14,20 @@ const ALL_NOTES = gql`
   }
 `;
 
+const USER_NOTES = gql`
+  query {
+    userNotes {
+      note_id
+      user_id
+      username
+      content
+      is_important
+      is_public
+      created_at
+    }
+  }
+`;
+
 const ME = gql`
   query {
     me {
@@ -71,4 +85,4 @@ const LOGIN = gql`
   }
 `;
 
-export { ALL_NOTES, ADD_NOTE, LOGIN, ME, EDIT_NOTE };
+export { ALL_NOTES, USER_NOTES, ADD_NOTE, LOGIN, ME, EDIT_NOTE };

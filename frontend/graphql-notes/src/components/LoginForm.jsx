@@ -17,7 +17,9 @@ const LoginForm = ({ setToken, setUser }) => {
       const token = result.data.login.value;
       setToken(token);
       setUser(username);
-      localStorage.setItem("note-user", JSON.stringify({ token, username }));
+      localStorage.setItem("note-user-token", token);
+      localStorage.setItem("note-user", username);
+
       setUsername("");
       setPassword("");
     }

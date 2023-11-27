@@ -68,6 +68,7 @@ const typeDefs = `
     }
     type Query {
         allNotes: [Note!]!
+        userNotes: [Note!]!
         noteCount: [Count]!
         me: User
     }
@@ -93,6 +94,32 @@ const resolvers = {
         throw new GraphQLError("Retrieve users failure", {
           extensions: {
             code: "Retrieve User error",
+            error,
+          },
+        });
+      }
+    },
+
+    userNotes: async (root, args, context) => {
+      const currentUser = context.currentUser;
+      if (!currentUser) {
+        throw new GraphQLError("User not Authenticated", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+          },
+        });
+      }
+
+      try {
+        const userNoteQuery =
+          "SELECT n.note_id, n.user_id, n.content, n.is_public, n.is_important, n.created_at, u.username FROM notes n join users u on n.user_id = u.user_id WHERE u.user_id = $1 ORDER BY n.created_at DESC;";
+        const userNoteValues = [currentUser.user_id];
+        const data = await pool.query(userNoteQuery, userNoteValues);
+        return data.rows;
+      } catch (error) {
+        throw new GraphQLError("Retrieve User Notes Failure", {
+          extensions: {
+            code: "Retrieve User Note Failure",
             error,
           },
         });
