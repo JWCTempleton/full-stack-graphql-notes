@@ -52,7 +52,7 @@ function App() {
   //   );
   // }
   return (
-    <>
+    <div>
       <div
         style={{
           display: "flex",
@@ -124,14 +124,19 @@ function App() {
             />
           }
         />
-        <Route path="/usernotes" element={<UserNotes />} />
+        <Route
+          path="/usernotes"
+          element={
+            <UserNotes user={user} visible={visible} setVisible={setVisible} />
+          }
+        />
         <Route
           path="/login"
           element={<LoginForm setToken={setToken} setUser={setUser} />}
         />
         <Route path="/" element={<Home />} />
       </Routes>
-    </>
+    </div>
   );
 }
 
