@@ -11,6 +11,10 @@ const UserNotes = ({ user, visible, setVisible }) => {
   });
   console.log("TEST", results.data);
 
+  if (results.loading) {
+    return <div>loading...</div>;
+  }
+
   const styles = {
     border: "1px solid white",
     borderRadius: "8px",
