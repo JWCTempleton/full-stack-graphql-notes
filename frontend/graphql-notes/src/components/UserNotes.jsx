@@ -30,7 +30,7 @@ const UserNotes = ({ user, visible, setVisible }) => {
     <div
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-      <h2>User Notes</h2>
+      <h1>My Notes</h1>
       <Toggleable
         buttonLabel="New Note"
         visible={visible}

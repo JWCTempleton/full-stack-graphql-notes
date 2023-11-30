@@ -7,12 +7,12 @@ import NoteForm from "./NoteForm";
 const styles = {
   border: "1px solid white",
   borderRadius: "8px",
-  marginTop: "12px",
+  marginTop: "18px",
   width: "600px",
   display: "flex",
   flexDirection: "column",
   alignItems: "flex-start",
-  padding: "10px",
+  padding: "16px",
 };
 
 const Notes = ({ notes, user, visible, setVisible }) => {
@@ -21,7 +21,9 @@ const Notes = ({ notes, user, visible, setVisible }) => {
   });
 
   return (
-    <div>
+    <div
+      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+    >
       <Toggleable
         buttonLabel="New Note"
         visible={visible}
