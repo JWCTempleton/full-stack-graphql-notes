@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { EDIT_NOTE, USER_NOTES } from "../queries";
+import { DELETE_NOTE, EDIT_NOTE, USER_NOTES } from "../queries";
 import moment from "moment";
 import Toggleable from "./Toggleable";
 import NoteForm from "./NoteForm";
@@ -9,7 +9,10 @@ const UserNotes = ({ user, visible, setVisible }) => {
   const [editNote] = useMutation(EDIT_NOTE, {
     refetchQueries: [{ query: USER_NOTES }],
   });
-  console.log("TEST", results.data);
+
+  const [deleteNote] = useMutation(DELETE_NOTE, {
+    refetchQueries: [{ query: USER_NOTES }],
+  });
 
   if (results.loading) {
     return <div>loading...</div>;
@@ -72,7 +75,9 @@ const UserNotes = ({ user, visible, setVisible }) => {
                   >
                     {n.is_important ? "Important" : "Unimportant"}
                   </button>
-                  <button>Delete</button>
+                  <button onClick={() => deleteNote({ variables: { noteId } })}>
+                    Delete
+                  </button>
                 </div>
               ) : (
                 ""

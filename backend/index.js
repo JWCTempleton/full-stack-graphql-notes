@@ -65,6 +65,9 @@ const typeDefs = `
           note_id: ID!
           is_important: Boolean!
         ):[Note]
+        deleteNote(
+          note_id: ID!
+        ):[Note]
     }
     type Query {
         allNotes: [Note!]!
@@ -193,6 +196,34 @@ const resolvers = {
         return [data.rows[0]];
       } catch (error) {
         throw new GraphQLError("Add Note failure", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            error,
+          },
+        });
+      }
+    },
+    deleteNote: async (root, args, context) => {
+      const currentUser = context.currentUser;
+      const { note_id } = args;
+
+      if (!currentUser) {
+        throw new GraphQLError("User not Authenticated", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+          },
+        });
+      }
+
+      try {
+        const deleteNoteQuery =
+          "DELETE FROM notes WHERE note_id = $1 AND user_id = $2 returning *";
+        const deleteValues = [note_id, currentUser.user_id];
+
+        const data = await pool.query(deleteNoteQuery, deleteValues);
+        return [data.rows[0]];
+      } catch (error) {
+        throw new GraphQLError("Delete Note failure", {
           extensions: {
             code: "BAD_USER_INPUT",
             error,

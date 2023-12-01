@@ -1,5 +1,5 @@
 import moment from "moment";
-import { ALL_NOTES, EDIT_NOTE } from "../queries";
+import { ALL_NOTES, DELETE_NOTE, EDIT_NOTE } from "../queries";
 import { useMutation } from "@apollo/client";
 import Toggleable from "./Toggleable";
 import NoteForm from "./NoteForm";
@@ -17,6 +17,10 @@ const styles = {
 
 const Notes = ({ notes, user, visible, setVisible }) => {
   const [editNote] = useMutation(EDIT_NOTE, {
+    refetchQueries: [{ query: ALL_NOTES }],
+  });
+
+  const [deleteNote] = useMutation(DELETE_NOTE, {
     refetchQueries: [{ query: ALL_NOTES }],
   });
 
@@ -66,7 +70,9 @@ const Notes = ({ notes, user, visible, setVisible }) => {
                   >
                     {n.is_important ? "Important" : "Unimportant"}
                   </button>
-                  <button>Delete</button>
+                  <button onClick={() => deleteNote({ variables: { noteId } })}>
+                    Delete
+                  </button>
                 </div>
               ) : (
                 ""

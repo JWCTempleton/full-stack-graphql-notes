@@ -63,6 +63,20 @@ const ADD_NOTE = gql`
   }
 `;
 
+const DELETE_NOTE = gql`
+  mutation deleteNote($noteId: ID!) {
+    deleteNote(note_id: $noteId) {
+      note_id
+      user_id
+      username
+      content
+      is_important
+      is_public
+      created_at
+    }
+  }
+`;
+
 const EDIT_NOTE = gql`
   mutation editNote($noteId: ID!, $isImportant: Boolean!) {
     editNote(note_id: $noteId, is_important: $isImportant) {
@@ -85,4 +99,4 @@ const LOGIN = gql`
   }
 `;
 
-export { ALL_NOTES, USER_NOTES, ADD_NOTE, LOGIN, ME, EDIT_NOTE };
+export { ALL_NOTES, USER_NOTES, ADD_NOTE, LOGIN, ME, EDIT_NOTE, DELETE_NOTE };
