@@ -12,17 +12,20 @@ const LoginForm = ({ setToken, setUser }) => {
     },
   });
 
+  console.log("TEST", result.data);
+
   useEffect(() => {
     if (result.data) {
       const token = result.data.login.value;
       setToken(token);
-      setUser(username);
+      setUser(result.data.login.user);
       localStorage.setItem("note-user-token", token);
-      localStorage.setItem("note-user", username);
+      localStorage.setItem("note-user", JSON.stringify(result.data.login.user));
 
       setUsername("");
       setPassword("");
     }
+
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result.data]);
 

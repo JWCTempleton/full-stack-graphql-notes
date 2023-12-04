@@ -4,6 +4,7 @@ import Notes from "./components/Notes";
 import Home from "./components/Home";
 import LoginForm from "./components/LoginForm";
 import UserNotes from "./components/UserNotes";
+import Admin from "./components/Admin";
 import { ALL_NOTES } from "./queries";
 import { useEffect, useState } from "react";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
@@ -12,15 +13,20 @@ function App() {
   // eslint-disable-next-line no-unused-vars
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
+  // const [loggedInUser, setLoggedInUser] = useState(null);
   const [visible, setVisible] = useState(false);
   const result = useQuery(ALL_NOTES);
   const client = useApolloClient();
+
+  // const { loading, error, data } = useQuery(ME, {
+  //   fetchPolicy: "network-only", // Doesn't check cache before making a network request
+  // });
 
   const navigate = useNavigate();
 
   useEffect(() => {
     let savedToken = localStorage.getItem("note-user-token");
-    let savedUser = localStorage.getItem("note-user");
+    let savedUser = JSON.parse(localStorage.getItem("note-user"));
     if (savedToken) {
       setToken(savedToken);
       setUser(savedUser);
@@ -35,6 +41,8 @@ function App() {
   if (result.loading) {
     return <div>loading...</div>;
   }
+
+  // error && console.log("NO USER LOGGED IN");
 
   const logout = () => {
     setToken(null);
@@ -51,6 +59,8 @@ function App() {
   //     </div>
   //   );
   // }
+
+  // console.log("TEST ADMIN", logInResult.data);
   return (
     <div>
       <div
@@ -78,6 +88,18 @@ function App() {
               my notes
             </Link>
           )}
+          {token && user.is_admin && (
+            <Link
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "18px",
+              }}
+              to="/admin"
+            >
+              admin
+            </Link>
+          )}
         </div>
 
         <div
@@ -90,7 +112,8 @@ function App() {
         >
           {token ? (
             <>
-              <h2>Welcome, {user}</h2> <button onClick={logout}>logout</button>
+              <h2>Welcome, {user.username}</h2>{" "}
+              <button onClick={logout}>logout</button>
             </>
           ) : (
             <Link
@@ -134,6 +157,7 @@ function App() {
           path="/login"
           element={<LoginForm setToken={setToken} setUser={setUser} />}
         />
+        <Route path="/admin" element={<Admin />} />
         <Route path="/" element={<Home />} />
       </Routes>
     </div>

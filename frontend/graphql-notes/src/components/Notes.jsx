@@ -54,7 +54,7 @@ const Notes = ({ notes, user, visible, setVisible }) => {
                 Created by: {n.username} on{" "}
                 {moment(n.created_at).format(`MMMM Do, YYYY`)}.
               </div>
-              {user && user === n.username ? (
+              {user && user.username === n.username ? (
                 <div
                   style={{
                     display: "flex",

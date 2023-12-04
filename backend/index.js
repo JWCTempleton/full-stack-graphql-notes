@@ -27,6 +27,10 @@ const typeDefs = `
     type Token {
         value: String!
     }
+    type LoggedInUser {
+      value: String!
+      user: User!
+    }
     type Note {
         note_id: ID!
         user_id:ID!
@@ -55,7 +59,7 @@ const typeDefs = `
         login(
             username: String!
             password: String!
-          ): Token
+          ): LoggedInUser
         createUser(
             username: String!
             password: String!
@@ -266,8 +270,6 @@ const resolvers = {
         }
         const user = data.rows[0];
 
-        console.log("USER", user);
-
         const passwordCorrect = await bcrypt.compare(password, user.password);
 
         if (!passwordCorrect) {
@@ -293,6 +295,7 @@ const resolvers = {
 
         return {
           value: jwt.sign(userForToken, process.env.SECRET),
+          user: user,
         };
       } catch (error) {
         throw new GraphQLError("Find User failure", {
