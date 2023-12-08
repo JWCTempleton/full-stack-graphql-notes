@@ -1,4 +1,6 @@
 import "./App.css";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 import { useApolloClient, useQuery } from "@apollo/client";
 import Notes from "./components/Notes";
 import Home from "./components/Home";
@@ -8,6 +10,12 @@ import Admin from "./components/Admin";
 import { ALL_NOTES } from "./queries";
 import { useEffect, useState } from "react";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
+
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
 
 function App() {
   // eslint-disable-next-line no-unused-vars
@@ -62,105 +70,112 @@ function App() {
 
   // console.log("TEST ADMIN", logInResult.data);
   return (
-    <div>
-      <div
-        style={{
-          display: "flex",
-          width: "80vw",
-          justifyContent: "space-between",
-        }}
-      >
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <div>
         <div
           style={{
             display: "flex",
-            alignItems: "center",
+            width: "80vw",
+            justifyContent: "space-between",
           }}
         >
-          <Link style={{ padding: "10px" }} to="/">
-            home
-          </Link>
-          <Link style={{ padding: "10px" }} to="/notes">
-            all notes
-          </Link>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Link style={{ padding: "10px" }} to="/">
+              home
+            </Link>
+            <Link style={{ padding: "10px" }} to="/notes">
+              all notes
+            </Link>
 
-          {token && (
-            <Link style={{ padding: "10px" }} to="/usernotes">
-              my notes
-            </Link>
-          )}
-          {token && user.is_admin && (
-            <Link
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "18px",
-              }}
-              to="/admin"
-            >
-              admin
-            </Link>
-          )}
+            {token && (
+              <Link style={{ padding: "10px" }} to="/usernotes">
+                my notes
+              </Link>
+            )}
+            {token && user.is_admin && (
+              <Link
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "18px",
+                }}
+                to="/admin"
+              >
+                admin
+              </Link>
+            )}
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "18px",
+              marginBottom: "12px",
+            }}
+          >
+            {token ? (
+              <>
+                <h2>Welcome, {user.username}</h2>{" "}
+                <button onClick={logout}>logout</button>
+              </>
+            ) : (
+              <Link
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "18px",
+                }}
+                to="/login"
+              >
+                login
+              </Link>
+            )}
+          </div>
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "18px",
-            marginBottom: "12px",
-          }}
-        >
-          {token ? (
-            <>
-              <h2>Welcome, {user.username}</h2>{" "}
-              <button onClick={logout}>logout</button>
-            </>
-          ) : (
-            <Link
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "18px",
-              }}
-              to="/login"
-            >
-              login
-            </Link>
-          )}
-        </div>
-      </div>
-
-      {/* <Toggleable buttonLabel="New Note">
+        {/* <Toggleable buttonLabel="New Note">
         <NoteForm />
       </Toggleable>
       <h1>Notes</h1>
       <Notes notes={result.data.allNotes} user={user} /> */}
-      <Routes>
-        <Route
-          path="/notes"
-          element={
-            <Notes
-              notes={result.data.allNotes}
-              user={user}
-              visible={visible}
-              setVisible={setVisible}
-            />
-          }
-        />
-        <Route
-          path="/usernotes"
-          element={
-            <UserNotes user={user} visible={visible} setVisible={setVisible} />
-          }
-        />
-        <Route
-          path="/login"
-          element={<LoginForm setToken={setToken} setUser={setUser} />}
-        />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </div>
+        <Routes>
+          <Route
+            path="/notes"
+            element={
+              <Notes
+                notes={result.data.allNotes}
+                user={user}
+                visible={visible}
+                setVisible={setVisible}
+              />
+            }
+          />
+          <Route
+            path="/usernotes"
+            element={
+              <UserNotes
+                user={user}
+                visible={visible}
+                setVisible={setVisible}
+              />
+            }
+          />
+          <Route
+            path="/login"
+            element={<LoginForm setToken={setToken} setUser={setUser} />}
+          />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </div>
+    </ThemeProvider>
   );
 }
 
